@@ -178,7 +178,21 @@ Returns the destination vertex of edge `e` in `graph`.
 """
 function destination_vertex end
 
-# TODO `neighbor_vertices`, `neighbor_edges`, `predecessor_vertices`, `successor_vertices`
+"""
+    neighbor_vertices(graph, v)
+
+Returns the vertices that share and edge with vertex `v`.
+"""
+function neighbor_vertices end
+
+"""
+    neighbor_edges(graph, e)
+
+Returns the edges that share a vertex with edge `e`.
+"""
+function neighbor_edges end
+
+# TODO `predecessor_vertices`, `successor_vertices`
 
 # mutating methods
 """
@@ -429,6 +443,16 @@ source_vertex(graph, e, ::DontDelegate) = throw(MethodError(source_vertex, (grap
 destination_vertex(graph, e) = destination_vertex(graph, e, DelegatorTrait(Network(), graph))
 destination_vertex(graph, e, ::DelegateToField) = destination_vertex(delegator(Network(), graph), e)
 destination_vertex(graph, e, ::DontDelegate) = throw(MethodError(destination_vertex, (graph, e)))
+
+### `neighbor_vertices`
+neighbor_vertices(graph, v) = neighbor_vertices(graph, v, DelegatorTrait(Network(), graph))
+neighbor_vertices(graph, v, ::DelegateToField) = neighbor_vertices(delegator(Network(), graph), v)
+neighbor_vertices(graph, v, ::DontDelegate) = throw(MethodError(neighbor_vertices, (graph, v)))
+
+### `neighbor_edges`
+neighbor_edges(graph, e) = neighbor_edges(graph, e, DelegatorTrait(Network(), graph))
+neighbor_edges(graph, e, ::DelegateToField) = neighbor_edges(delegator(Network(), graph), e)
+neighbor_edges(graph, e, ::DontDelegate) = throw(MethodError(neighbor_edges, (graph, e)))
 
 ## `addvertex!`
 # TODO check if vertex already exists
