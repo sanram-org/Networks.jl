@@ -19,6 +19,8 @@ A type implementing the `Network` interface must implement the following methods
 | `all_edges(g)`            | Returns the list of edges                        |
 | `incident_vertices(g, e)` | Returns the vertices connected by edge `e`       |
 | `incident_edges(g, v)`    | Returns the edges conected to vertex `v`         |
+| `neighbor_vertices(g, v)` | Returns the vertices neighboring vertex `v`      |
+| `neighbor_edges(g, e)`    | Returns the edges neighboring edge `e`           |
 | `Directedness(::Type{G})` | Returns the directedness trait of graph type `G` |
 
 ### Directed methods

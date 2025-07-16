@@ -86,18 +86,20 @@ function incident_edges end
 @deprecate vertex_incidents(args...; kwargs...) incident_edges(args...; kwargs...) true
 
 """
-    vertex_neighbors(graph, v)
+    neighbor_vertices(graph, v)
 
-Returns the vertices neighboring vertex `v` in the `graph`.
+Returns the vertices neighboring vertex `v` in the `graph`; i.e. those that share an edge with vertex `v`.
 """
-function vertex_neighbors end
+function neighbor_vertices end
+@deprecate vertex_neighbors(args...; kwargs...) neighbor_vertices(args...; kwargs...) true
 
 """
-    edge_neighbors(graph, e)
+    neighbor_edges(graph, e)
 
-Returns the edges neighboring edge `e` in the `graph`.
+Returns the edges neighboring edge `e` in the `graph`; i.e. those that share a vertex with edge `e`.
 """
-function edge_neighbors end
+function neighbor_edges end
+@deprecate edge_neighbors(args...; kwargs...) neighbor_edges(args...; kwargs...) true
 
 # query methods with default implementation
 """
@@ -177,20 +179,6 @@ function source_vertex end
 Returns the destination vertex of edge `e` in `graph`.
 """
 function destination_vertex end
-
-"""
-    neighbor_vertices(graph, v)
-
-Returns the vertices that share and edge with vertex `v`.
-"""
-function neighbor_vertices end
-
-"""
-    neighbor_edges(graph, e)
-
-Returns the edges that share a vertex with edge `e`.
-"""
-function neighbor_edges end
 
 """
     predecessor_vertices(graph, v)
@@ -273,10 +261,10 @@ end
 
 ## `neighbors`
 neighbors(graph; kwargs...) = neighbors(sort_nt(kwargs), graph, v)
-neighbors(graph, v::AbstractVertex) = vertex_neighbors(graph, v)
-neighbors(kwargs::NamedTuple{(:vertex,)}, graph) = vertex_neighbors(graph, kwargs.v)
-neighbors(graph, e::AbstractEdge) = edge_neighbors(graph, e)
-neighbors(kwargs::NamedTuple{(:edge,)}, graph) = edge_neighbors(graph, kwargs.e)
+neighbors(graph, v::AbstractVertex) = neighbor_vertices(graph, v)
+neighbors(kwargs::NamedTuple{(:vertex,)}, graph) = neighbor_vertices(graph, kwargs.v)
+neighbors(graph, e::AbstractEdge) = neighbor_edges(graph, e)
+neighbors(kwargs::NamedTuple{(:edge,)}, graph) = neighbor_edges(graph, kwargs.e)
 
 ## `all_vertices`
 all_vertices(graph) = all_vertices(graph, DelegatorTrait(Network(), graph))
@@ -298,11 +286,11 @@ incident_edges(graph, v) = incident_edges(graph, v, DelegatorTrait(Network(), gr
 incident_edges(graph, v, ::DelegateToField) = incident_edges(delegator(Network(), graph), v)
 incident_edges(graph, v, ::DontDelegate) = throw(MethodError(incident_edges, (graph, v)))
 
-## `vertex_neighbors`
-vertex_neighbors(graph, v) = vertex_neighbors(graph, v, DelegatorTrait(Network(), graph))
-vertex_neighbors(graph, v, ::DelegateToField) = vertex_neighbors(delegator(Network(), graph), v)
-function vertex_neighbors(graph, v, ::DontDelegate)
-    fallback(vertex_neighbors)
+## `neighbor_vertices`
+neighbor_vertices(graph, v) = neighbor_vertices(graph, v, DelegatorTrait(Network(), graph))
+neighbor_vertices(graph, v, ::DelegateToField) = neighbor_vertices(delegator(Network(), graph), v)
+function neighbor_vertices(graph, v, ::DontDelegate)
+    fallback(neighbor_vertices)
     incident_edges = vertex_incidents(graph, v)
     neighbors = Set{vertex_type(graph)}()
     for edge in incident_edges
@@ -316,11 +304,11 @@ function vertex_neighbors(graph, v, ::DontDelegate)
     return neighbors
 end
 
-## `edge_neighbors`
-edge_neighbors(graph, e) = edge_neighbors(graph, e, DelegatorTrait(Network(), graph))
-edge_neighbors(graph, e, ::DelegateToField) = edge_neighbors(delegator(Network(), graph), e)
-function edge_neighbors(graph, e, ::DontDelegate)
-    fallback(edge_neighbors)
+## `neighbor_edges`
+neighbor_edges(graph, e) = neighbor_edges(graph, e, DelegatorTrait(Network(), graph))
+neighbor_edges(graph, e, ::DelegateToField) = neighbor_edges(delegator(Network(), graph), e)
+function neighbor_edges(graph, e, ::DontDelegate)
+    fallback(neighbor_edges)
     incident_vertices = edge_incidents(graph, e)
     neighbors = Set{edge_type(graph)}()
     for vertex in incident_vertices

@@ -127,7 +127,7 @@ end
     end
 end
 
-@testset "vertex_neighbors" begin
+@testset "neighbor_vertices" begin
     g = IncidentNetwork{Symbol,Int}()
     addvertex!(g, :a)
     addvertex!(g, :b)
@@ -136,12 +136,12 @@ end
     Networks.link!(g, :a, 1)
     Networks.link!(g, :b, 1)
 
-    @test issetequal(vertex_neighbors(g, :a), Set([:b]))
-    @test issetequal(vertex_neighbors(g, :b), Set([:a]))
-    @test isempty(vertex_neighbors(g, :c))
+    @test issetequal(neighbor_vertices(g, :a), Set([:b]))
+    @test issetequal(neighbor_vertices(g, :b), Set([:a]))
+    @test isempty(neighbor_vertices(g, :c))
 end
 
-@testset "edge_neighbors" begin
+@testset "neighbor_edges" begin
     g = IncidentNetwork{Symbol,Int}()
     addvertex!(g, :a)
     addvertex!(g, :b)
@@ -159,9 +159,9 @@ end
     addedge!(g, 3)
     Networks.link!(g, :d, 3)
 
-    @test issetequal(edge_neighbors(g, 1), Set([2]))
-    @test issetequal(edge_neighbors(g, 2), Set([1]))
-    @test isempty(edge_neighbors(g, 3))
+    @test issetequal(neighbor_edges(g, 1), Set([2]))
+    @test issetequal(neighbor_edges(g, 2), Set([1]))
+    @test isempty(neighbor_edges(g, 3))
 end
 
 @testset "vertex_type" begin

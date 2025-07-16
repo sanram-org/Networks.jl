@@ -38,10 +38,10 @@ all_edges(g::SimpleNetwork) = SimpleEdgeIter(g)
 incident_vertices(g::SimpleNetwork, e::SimpleEdge) = [e.v1, e.v2]
 incident_edges(g::SimpleNetwork, v) = g.fadjlist[v]
 
-vertex_neighbors(g::SimpleNetwork, v) = g.fadjlist[v]
-function edge_neighbors(g::SimpleNetwork, e::SimpleEdge)
-    neigh_v1 = vertex_neighbors(g, e.v1)
-    neigh_v2 = vertex_neighbors(g, e.v2)
+neighbor_vertices(g::SimpleNetwork, v) = g.fadjlist[v]
+function neighbor_edges(g::SimpleNetwork, e::SimpleEdge)
+    neigh_v1 = neighbor_vertices(g, e.v1)
+    neigh_v2 = neighbor_vertices(g, e.v2)
     neighbors = Set{edge_type(g)}()
 
     for v in neigh_v1
