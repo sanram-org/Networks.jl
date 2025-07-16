@@ -23,15 +23,18 @@ A type implementing the `Network` interface must implement the following methods
 
 ### Directed methods
 
-| Required method            | Description                                   |
-| :------------------------- | :-------------------------------------------- |
-| `incoming_edges(g, v)`     | Returns the edges incoming to vertex `v`      |
-| `outgoing_edges(g, v)`     | Returns the vertices outgoing from vertex `v` |
-| `source_vertex(g, e)`      | Returns the source vertex of edge `e`         |
-| `destination_vertex(g, e)` | Returns the destination vertex of edge `e`    |
+!!! warning
 
-!!! todo
-    What about hypergraphs? In such case, the source and destination of an edge can be multiple and thus, we should have a `vertices_src` and `vertices_dst` functions.
+    Directedness on hypergraphs is not well-defined. It is such an edge case, that we have decide to don't support it explicitly for the time being.
+
+| Required method              | Description                                       |
+| :--------------------------- | :------------------------------------------------ |
+| `incoming_edges(g, v)`       | Returns the edges incoming to vertex `v`          |
+| `outgoing_edges(g, v)`       | Returns the vertices outgoing from vertex `v`     |
+| `source_vertex(g, e)`        | Returns the source vertex of edge `e`             |
+| `destination_vertex(g, e)`   | Returns the destination vertex of edge `e`        |
+| `predecessor_vertices(g, v)` | Returns the vertices that are predecessors of `v` |
+| `successor_vertices(g, v)`   | Returns the vertices that are successors of `v`   |
 
 ### Optional methods
 

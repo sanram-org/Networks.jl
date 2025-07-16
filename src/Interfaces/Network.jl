@@ -192,7 +192,19 @@ Returns the edges that share a vertex with edge `e`.
 """
 function neighbor_edges end
 
-# TODO `predecessor_vertices`, `successor_vertices`
+"""
+    predecessor_vertices(graph, v)
+
+Returns the vertices that are predecessors of vertex `v` in `graph`.
+"""
+function predecessor_vertices end
+
+"""
+    successor_vertices(graph, v)
+
+Returns the vertices that are successors of vertex `v` in `graph`.
+"""
+function successor_vertices end
 
 # mutating methods
 """
@@ -453,6 +465,16 @@ neighbor_vertices(graph, v, ::DontDelegate) = throw(MethodError(neighbor_vertice
 neighbor_edges(graph, e) = neighbor_edges(graph, e, DelegatorTrait(Network(), graph))
 neighbor_edges(graph, e, ::DelegateToField) = neighbor_edges(delegator(Network(), graph), e)
 neighbor_edges(graph, e, ::DontDelegate) = throw(MethodError(neighbor_edges, (graph, e)))
+
+### `predecessor_vertices`
+predecessor_vertices(graph, v) = predecessor_vertices(graph, v, DelegatorTrait(Network(), graph))
+predecessor_vertices(graph, v, ::DelegateToField) = predecessor_vertices(delegator(Network(), graph), v)
+predecessor_vertices(graph, v, ::DontDelegate) = throw(MethodError(predecessor_vertices, (graph, v)))
+
+### `successor_vertices`
+successor_vertices(graph, v) = successor_vertices(graph, v, DelegatorTrait(Network(), graph))
+successor_vertices(graph, v, ::DelegateToField) = successor_vertices(delegator(Network(), graph), v)
+successor_vertices(graph, v, ::DontDelegate) = throw(MethodError(successor_vertices, (graph, v)))
 
 ## `addvertex!`
 # TODO check if vertex already exists
