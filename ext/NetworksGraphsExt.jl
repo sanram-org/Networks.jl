@@ -38,7 +38,6 @@ function GraphsAdaptorNetwork{T}(g::AbstractNetwork) where {T}
     vertexmap = GraphVertexBijection{T,vertex_type(g)}(
         Dict{T,vertex_type(g)}(i => v for (i, v) in enumerate(vertices(g)))
     )
-    @show vertex_type(g) typeof(vertexmap)
     return GraphsAdaptorNetwork{T,typeof(g),vertex_type(g)}(g, vertexmap)
 end
 
