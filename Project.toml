@@ -1,6 +1,6 @@
 name = "Networks"
 uuid = "634dcf3f-6aa7-47ba-9e85-1fb329c9ebfe"
-authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez+git@bsc.es>"]
+authors = ["Sergio Sánchez Ramírez"]
 version = "0.4.0"
 
 [deps]
