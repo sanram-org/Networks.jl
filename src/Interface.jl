@@ -23,7 +23,7 @@ abstract type MatrixRepresentation end
 struct AdjacencyMatrix <: MatrixRepresentation end
 struct IncidenceMatrix <: MatrixRepresentation end
 
-@delegated interface=Network() MatrixRepresentation(graph)
+@delegated interface = Network() MatrixRepresentation(graph)
 
 """
     EdgePersistence
@@ -40,7 +40,7 @@ struct PersistEdges <: EdgePersistence end
 struct RemoveEdges <: EdgePersistence end
 struct PruneEdges <: EdgePersistence end
 
-@delegated interface=Network() EdgePersistence(graph) = PruneEdges()
+@delegated interface = Network() EdgePersistence(graph) = PruneEdges()
 
 # query methods
 function vertices end
@@ -78,7 +78,7 @@ function edge end
 Returns the vertices in the `graph`.
 """
 function all_vertices end
-@delegated interface=Network() all_vertices(graph)
+@delegated interface = Network() all_vertices(graph)
 
 """
     all_edges(graph)
@@ -86,7 +86,7 @@ function all_vertices end
 Returns the edges in the `graph`.
 """
 function all_edges end
-@delegated interface=Network() all_edges(graph)
+@delegated interface = Network() all_edges(graph)
 
 """
     edge_incidents(graph, e)
@@ -94,7 +94,7 @@ function all_edges end
 Returns the vertices connected by edge `e` in `graph`.
 """
 function edge_incidents end
-@delegated interface=Network() edge_incidents(graph, e)
+@delegated interface = Network() edge_incidents(graph, e)
 
 """
     vertex_incidents(graph, v)
@@ -102,7 +102,7 @@ function edge_incidents end
 Returns the edges connected to vertex `v` in `graph`.
 """
 function vertex_incidents end
-@delegated interface=Network() vertex_incidents(graph, e)
+@delegated interface = Network() vertex_incidents(graph, e)
 
 """
     vertex_neighbors(graph, v)
@@ -110,7 +110,7 @@ function vertex_incidents end
 Returns the vertices neighboring vertex `v` in the `graph`.
 """
 function vertex_neighbors end
-@delegated interface=Network() function vertex_neighbors(graph, v)
+@delegated interface = Network() function vertex_neighbors(graph, v)
     fallback(vertex_neighbors)
     incident_edges = vertex_incidents(graph, v)
     neighbors = Set{vertex_type(graph)}()
@@ -131,7 +131,7 @@ end
 Returns the edges neighboring edge `e` in the `graph`.
 """
 function edge_neighbors end
-@delegated interface=Network() function edge_neighbors(graph, e)
+@delegated interface = Network() function edge_neighbors(graph, e)
     fallback(edge_neighbors)
     incident_vertices = edge_incidents(graph, e)
     neighbors = Set{edge_type(graph)}()
@@ -153,7 +153,7 @@ end
 Returns the type of vertices in the `graph`. Defaults to `Any`.
 """
 function vertex_type end
-@delegated interface=Network() function vertex_type(graph)
+@delegated interface = Network() function vertex_type(graph)
     fallback(vertex_type)
     return Any
 end
@@ -164,7 +164,7 @@ end
 Returns the type of edges in the `graph`. Defaults to `Any`.
 """
 function edge_type end
-@delegated interface=Network() function edge_type(graph)
+@delegated interface = Network() function edge_type(graph)
     fallback(edge_type)
     return Any
 end
@@ -175,7 +175,7 @@ end
 Returns `true` if vertex `v` exists in the `graph`.
 """
 function hasvertex end
-@delegated interface=Network() function hasvertex(graph, v)
+@delegated interface = Network() function hasvertex(graph, v)
     fallback(hasvertex)
     return v in vertices(graph)
 end
@@ -186,7 +186,7 @@ end
 Returns `true` if edge `e` exists in the `graph`.
 """
 function hasedge end
-@delegated interface=Network() function hasedge(graph, e)
+@delegated interface = Network() function hasedge(graph, e)
     fallback(hasedge)
     return e in edges(graph)
 end
@@ -197,7 +197,7 @@ end
 Returns the number of vertices in the `graph`.
 """
 function nvertices end
-@delegated interface=Network() function nvertices(graph)
+@delegated interface = Network() function nvertices(graph)
     fallback(nvertices)
     return length(vertices(graph))
 end
@@ -208,13 +208,13 @@ end
 Returns the number of edges in the `graph`.
 """
 function nedges end
-@delegated interface=Network() function nedges(graph)
+@delegated interface = Network() function nedges(graph)
     fallback(nedges)
     return length(edges(graph))
 end
 
 function edges_set_strand end
-@delegated interface=Network() function edges_set_strand(graph)
+@delegated interface = Network() function edges_set_strand(graph)
     fallback(edges_set_strand)
     stranded_edges = Set{edge_type(graph)}()
     for edge in edges(graph)
@@ -227,7 +227,7 @@ function edges_set_strand end
 end
 
 function edges_set_open end
-@delegated interface=Network() function edges_set_open(graph)
+@delegated interface = Network() function edges_set_open(graph)
     fallback(edges_set_open)
     stranded_edges = Set{edge_type(graph)}()
     for edge in edges(graph)
@@ -240,7 +240,7 @@ function edges_set_open end
 end
 
 function edges_set_hyper end
-@delegated interface=Network() function edges_set_hyper(graph)
+@delegated interface = Network() function edges_set_hyper(graph)
     fallback(edges_set_hyper)
     stranded_edges = Set{edge_type(graph)}()
     for edge in edges(graph)
@@ -262,7 +262,7 @@ Returns the vertex associated to `tag`.
     This is a method to be extended by the user on its own types.
 """
 function vertex_at end
-@delegated interface=Network() vertex_at(graph, tag)
+@delegated interface = Network() vertex_at(graph, tag)
 
 """
     edge_at(graph, tag)
@@ -274,7 +274,7 @@ Returns the edge associated to `tag`.
     This is a method to be extended by the user on its own types.
 """
 function edge_at end
-@delegated interface=Network() edge_at(graph, tag)
+@delegated interface = Network() edge_at(graph, tag)
 
 # mutating methods
 """
@@ -283,7 +283,7 @@ function edge_at end
 Adds vertex `v` to the `graph`.
 """
 function addvertex! end
-@delegated interface=Network() addvertex!(graph, v)
+@delegated interface = Network() addvertex!(graph, v)
 
 """
     addedge!(graph, e)
@@ -291,7 +291,7 @@ function addvertex! end
 Adds edge `e` to the `graph`.
 """
 function addedge! end
-@delegated interface=Network() addedge!(graph, e)
+@delegated interface = Network() addedge!(graph, e)
 
 """
     rmvertex!(graph, v)
@@ -299,7 +299,7 @@ function addedge! end
 Removes vertex `v` from the `graph`.
 """
 function rmvertex! end
-@delegated interface=Network() rmvertex!(graph, v)
+@delegated interface = Network() rmvertex!(graph, v)
 
 """
     rmedge!(graph, e)
@@ -307,7 +307,7 @@ function rmvertex! end
 Removes edge `e` from the `graph`.
 """
 function rmedge! end
-@delegated interface=Network() rmedge!(graph, e)
+@delegated interface = Network() rmedge!(graph, e)
 
 """
     setincident!(graph, v, e)
@@ -315,7 +315,7 @@ function rmedge! end
 Links vertex `v` with edge `e` in the `graph`.
 """
 function setincident! end
-@delegated interface=Network() setincident!(graph, v, e)
+@delegated interface = Network() setincident!(graph, v, e)
 
 """
     unsetincident!(graph, v, e)
@@ -323,7 +323,7 @@ function setincident! end
 Unlinks vertex `v` from edge `e` in the `graph`.
 """
 function unsetincident! end
-@delegated interface=Network() unsetincident!(graph, v, e)
+@delegated interface = Network() unsetincident!(graph, v, e)
 
 function prune_edges!(graph)
     for edge in edges_set_strand(graph)
