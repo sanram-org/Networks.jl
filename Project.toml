@@ -15,6 +15,6 @@ NetworksGraphsExt = "Graphs"
 
 [compat]
 Bijections = "0.2.2"
-DelegatorTraits = "0.2.0"
+DelegatorTraits = "0.2.1"
 Graphs = "1.13.0"
 julia = "1.10"
