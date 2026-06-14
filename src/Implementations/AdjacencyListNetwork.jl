@@ -6,7 +6,7 @@ struct SimpleEdge{T<:Integer} <: AbstractEdge
 end
 
 """
-    SimpleNetwork <: AbstractNetwork
+    AdjacencyListNetwork <: AbstractNetwork
 
 A network represented as an adjacency list.
 It is the translation of `SimpleGraph` from Graphs.jl to the [`Network`](@ref) interface.
@@ -16,30 +16,30 @@ It is the translation of `SimpleGraph` from Graphs.jl to the [`Network`](@ref) i
     This is mostly a example of compatibility with the Graphs.jl interface, but shouldn't be used as
     `Graphs.SimpleGraph` has proven to be problematic.
 """
-mutable struct SimpleNetwork{T<:Integer} <: AbstractNetwork
+mutable struct AdjacencyListNetwork{T<:Integer} <: AbstractNetwork
     fadjlist::Vector{Vector{T}}
     ne::Int
 end
 
-SimpleNetwork{T}() where {T} = SimpleNetwork{T}(Vector{Vector{T}}(), 0)
-SimpleNetwork{T}(n::Integer) where {T} = SimpleNetwork{T}([T[] for _ in 1:n], 0)
+AdjacencyListNetwork{T}() where {T} = AdjacencyListNetwork{T}(Vector{Vector{T}}(), 0)
+AdjacencyListNetwork{T}(n::Integer) where {T} = AdjacencyListNetwork{T}([T[] for _ in 1:n], 0)
 
-Base.copy(g::SimpleNetwork) = SimpleNetwork(copy.(g.fadjlist), g.ne)
+Base.copy(g::AdjacencyListNetwork) = AdjacencyListNetwork(copy.(g.fadjlist), g.ne)
 
-DelegatorTraits.ImplementorTrait(::Network, ::SimpleNetwork) = DelegatorTraits.Implements()
-EdgePersistence(::SimpleNetwork) = RemoveEdges()
+DelegatorTraits.ImplementorTrait(::Network, ::AdjacencyListNetwork) = DelegatorTraits.Implements()
+EdgePersistence(::AdjacencyListNetwork) = RemoveEdges()
 
-vertices(g::SimpleNetwork) = 1:length(g.fadjlist)
-edges(g::SimpleNetwork) = SimpleEdgeIter(g)
+vertices(g::AdjacencyListNetwork) = 1:length(g.fadjlist)
+edges(g::AdjacencyListNetwork) = SimpleEdgeIter(g)
 
-all_vertices(g::SimpleNetwork) = 1:length(g.fadjlist)
-all_edges(g::SimpleNetwork) = SimpleEdgeIter(g)
+all_vertices(g::AdjacencyListNetwork) = 1:length(g.fadjlist)
+all_edges(g::AdjacencyListNetwork) = SimpleEdgeIter(g)
 
-edge_incidents(::SimpleNetwork, e::SimpleEdge) = [e.v1, e.v2]
-vertex_incidents(g::SimpleNetwork, v) = map(dst -> SimpleEdge(v, dst), g.fadjlist[v])
+edge_incidents(::AdjacencyListNetwork, e::SimpleEdge) = [e.v1, e.v2]
+vertex_incidents(g::AdjacencyListNetwork, v) = map(dst -> SimpleEdge(v, dst), g.fadjlist[v])
 
-vertex_neighbors(g::SimpleNetwork, v) = g.fadjlist[v]
-function edge_neighbors(g::SimpleNetwork, e::SimpleEdge)
+vertex_neighbors(g::AdjacencyListNetwork, v) = g.fadjlist[v]
+function edge_neighbors(g::AdjacencyListNetwork, e::SimpleEdge)
     neigh_v1 = vertex_neighbors(g, e.v1)
     neigh_v2 = vertex_neighbors(g, e.v2)
     neighbors = Set{edge_type(g)}()
@@ -59,26 +59,26 @@ function edge_neighbors(g::SimpleNetwork, e::SimpleEdge)
     return neighbors
 end
 
-vertex_type(::SimpleNetwork{T}) where {T} = T
-edge_type(::SimpleNetwork{T}) where {T} = SimpleEdge{T}
+vertex_type(::AdjacencyListNetwork{T}) where {T} = T
+edge_type(::AdjacencyListNetwork{T}) where {T} = SimpleEdge{T}
 
-hasvertex(g::SimpleNetwork, v) = 1 <= v <= length(g.fadjlist)
-hasedge(g::SimpleNetwork, e::SimpleEdge) = e.v2 ∈ g.fadjlist[e.v1]
+hasvertex(g::AdjacencyListNetwork, v) = 1 <= v <= length(g.fadjlist)
+hasedge(g::AdjacencyListNetwork, e::SimpleEdge) = e.v2 ∈ g.fadjlist[e.v1]
 
-nvertices(g::SimpleNetwork) = length(g.fadjlist)
-nedges(g::SimpleNetwork) = g.ne
+nvertices(g::AdjacencyListNetwork) = length(g.fadjlist)
+nedges(g::AdjacencyListNetwork) = g.ne
 
-edges_set_strand(::SimpleNetwork{T}) where {T} = SimpleEdge{T}[]
-edges_set_open(::SimpleNetwork{T}) where {T} = SimpleEdge{T}[]
-edges_set_hyper(::SimpleNetwork{T}) where {T} = SimpleEdge{T}[]
+edges_set_strand(::AdjacencyListNetwork{T}) where {T} = SimpleEdge{T}[]
+edges_set_open(::AdjacencyListNetwork{T}) where {T} = SimpleEdge{T}[]
+edges_set_hyper(::AdjacencyListNetwork{T}) where {T} = SimpleEdge{T}[]
 
-function addvertex!(g::SimpleNetwork)
+function addvertex!(g::AdjacencyListNetwork)
     n = nvertices(g) + 1
     push!(g.fadjlist, Vector{vertex_type(g)}())
     return n
 end
 
-function addedge!(g::SimpleNetwork, e::SimpleEdge)
+function addedge!(g::AdjacencyListNetwork, e::SimpleEdge)
     a, b = e.v1, e.v2
     @assert a ∈ vertices(g)
     @assert b ∈ vertices(g)
@@ -92,12 +92,12 @@ function addedge!(g::SimpleNetwork, e::SimpleEdge)
     return e
 end
 
-function addedge!(g::SimpleNetwork, u, v)
+function addedge!(g::AdjacencyListNetwork, u, v)
     e = SimpleEdge(u, v)
     return addedge!(g, e)
 end
 
-function rmvertex!(g::SimpleNetwork, v)
+function rmvertex!(g::AdjacencyListNetwork, v)
     @assert hasvertex(g, v)
 
     # Update the adjacency lists of other vertices
@@ -112,7 +112,7 @@ function rmvertex!(g::SimpleNetwork, v)
     return v
 end
 
-function rmedge!(g::SimpleNetwork, e::SimpleEdge)
+function rmedge!(g::AdjacencyListNetwork, e::SimpleEdge)
     @assert hasedge(g, e)
     a, b = e.v1, e.v2
 
@@ -125,11 +125,11 @@ function rmedge!(g::SimpleNetwork, e::SimpleEdge)
     return e
 end
 
-Base.@propagate_inbounds fadj(g::SimpleNetwork) = g.fadjlist
-Base.@propagate_inbounds fadj(g::SimpleNetwork, u) = g.fadjlist[u]
+Base.@propagate_inbounds fadj(g::AdjacencyListNetwork) = g.fadjlist
+Base.@propagate_inbounds fadj(g::AdjacencyListNetwork, u) = g.fadjlist[u]
 
 struct SimpleEdgeIter{T}
-    g::SimpleNetwork{T}
+    g::AdjacencyListNetwork{T}
 end
 
 Base.IteratorSize(::Type{<:SimpleEdgeIter}) = Base.HasLength()

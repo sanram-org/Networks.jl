@@ -17,8 +17,8 @@ export neighbors, vertex_neighbors, edge_neighbors
 include("Implementations/IncidentNetwork.jl")
 export IncidentNetwork
 
-include("Implementations/SimpleNetwork.jl")
-export SimpleNetwork
+include("Implementations/AdjacencyListNetwork.jl")
+export AdjacencyListNetwork
 
 include("Algorithms/cycles.jl")
 
