@@ -11,4 +11,4 @@ makedocs(;
     warnonly=true,
 )
 
-deploydocs(; repo="github.com/bsc-quantic/Networks.jl", target="build", devbranch="main")
+deploydocs(; repo="github.com/sanram-org/Networks.jl", target="build", devbranch="main")

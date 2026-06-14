@@ -59,7 +59,7 @@ jobs:
       - name: Add Julia registries
         run: |
           using Pkg
-          pkg"registry add https://github.com/bsc-quantic/Registry.git"
+          pkg"registry add https://github.com/sanram-org/Registry.git"
           pkg"registry add General"
         shell: julia --color=yes {0}
       # - uses: julia-actions/julia-downgrade-compat@v1

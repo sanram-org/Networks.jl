@@ -1,8 +1,8 @@
 # Networks.jl
 
-[![CI](https://github.com/bsc-quantic/Networks.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/bsc-quantic/Networks.jl/actions/workflows/CI.yml)
-[![Documentation: stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://bsc-quantic.github.io/Networks.jl/)
-[![Documentation: dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://bsc-quantic.github.io/Networks.jl/dev/)
+[![CI](https://github.com/sanram-org/Networks.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sanram-org/Networks.jl/actions/workflows/CI.yml)
+[![Documentation: stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://sanram-org.github.io/Networks.jl/)
+[![Documentation: dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://sanram-org.github.io/Networks.jl/dev/)
 
 > [!WARNING]
 >  Networks.jl is still experimental, and the API can change.
@@ -18,7 +18,7 @@ During the development of [Tenet.jl](https://github.com/bsc-quantic/Tenet.jl), s
 
 - Support for hyperedges, open edges, and multi-edges
 - Graph types based on the incidence matrix
-- Automatic method delegation for wrapping graph types, based on [DelegatorTraits.jl](https://github.com/bsc-quantic/DelegatorTraits.jl)
+- Automatic method delegation for wrapping graph types, based on [DelegatorTraits.jl](https://github.com/sanram-org/DelegatorTraits.jl)
 - Vertices of any type, not just `Integer`s
 - Interfaces that are extensible and better decoupled from concrete implementations
 
