@@ -27,6 +27,11 @@ jobs:
         with:
           version: '1'
       - uses: julia-actions/cache@v2
+      - name: Add Julia registries
+        run: |
+          using Pkg
+          pkg"registry add https://github.com/sanram-org/Registry.git"
+          pkg"registry add General"
       - name: Install dependencies
         run: julia --color=yes --project=docs -e 'using Pkg; Pkg.instantiate()'
       - name: Build and deploy
