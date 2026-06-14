@@ -14,10 +14,10 @@ export setincident!, unsetincident!
 export edges_set_strand, edges_set_open, edges_set_hyper
 export neighbors, vertex_neighbors, edge_neighbors
 
-include("Components/IncidentNetwork.jl")
+include("Implementations/IncidentNetwork.jl")
 export IncidentNetwork
 
-include("Components/SimpleNetwork.jl")
+include("Implementations/SimpleNetwork.jl")
 export SimpleNetwork
 
 include("Algorithms/cycles.jl")
