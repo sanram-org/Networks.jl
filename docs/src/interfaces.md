@@ -1,13 +1,13 @@
 # Network interface
 
 > [!NOTE]
-> Networks.jl uses [DelegatorTraits.jl](https://github.com/bsc-quantic/DelegatorTraits.jl) for method delegation: a type wrapping a `Network` implementor can "inherit" (in reality, delegate) its method definitions by just declaring:
+> Networks.jl uses [DelegatorTraits.jl](https://github.com/sanram-org/DelegatorTraits.jl) for method delegation: a type wrapping a `Network` implementor can "inherit" (in reality, delegate) its method definitions by just declaring:
 >
 > ```julia
 > DelegatorTraits.DelegatorTrait(::Network, ::MyWrapperType) = DelegatorTraits.DelegateToField{:the_field_name}()
 > ```
 >
-> Using [`DelegatorTraits.jl`](https://github.com/bsc-quantic/DelegatorTraits.jl) is completely optional and you can still do method delegation manually.
+> Using [`DelegatorTraits.jl`](https://github.com/sanram-org/DelegatorTraits.jl) is completely optional and you can still do method delegation manually.
 
 The `Network` interface abstracts a network or graph as a bipartite graph whose sets are the vertices and the edges.
 As such, the main difference with the `Graphs.AbstractGraph` interface is that an edge has its own entity.

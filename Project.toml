@@ -1,7 +1,7 @@
 name = "Networks"
 uuid = "634dcf3f-6aa7-47ba-9e85-1fb329c9ebfe"
 authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez+git@bsc.es>"]
-version = "0.3.2"
+version = "0.4.0"
 
 [deps]
 Bijections = "e2ed5e7c-b2de-5872-ae92-c73ca462fb04"
@@ -15,6 +15,6 @@ NetworksGraphsExt = "Graphs"
 
 [compat]
 Bijections = "0.2.2"
-DelegatorTraits = "0.2.0"
+DelegatorTraits = "0.2.1"
 Graphs = "1.13.0"
 julia = "1.10"

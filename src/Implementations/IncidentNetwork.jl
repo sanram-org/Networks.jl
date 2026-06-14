@@ -24,6 +24,7 @@ DelegatorTraits.ImplementorTrait(::Network, ::IncidentNetwork) = DelegatorTraits
 
 # TODO parameterize `EdgePersistence` to allow for different edge persistence strategies
 EdgePersistence(::IncidentNetwork) = PersistEdges()
+MatrixRepresentation(::IncidentNetwork) = IncidenceMatrix()
 
 vertices(graph::IncidentNetwork) = keys(graph.vertexmap)
 edges(graph::IncidentNetwork) = keys(graph.edgemap)
