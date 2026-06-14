@@ -68,9 +68,9 @@ julia> edges(g)
 KeySet for a Dict{Int64, Set{Symbol}} with 1 entry. Keys:
   1
 
-julia> Networks.link!(g, :a, 1);
-julia> Networks.link!(g, :b, 1);
-julia> Networks.link!(g, :c, 1);
+julia> Networks.setincident!(g, :a, 1);
+julia> Networks.setincident!(g, :b, 1);
+julia> Networks.setincident!(g, :c, 1);
 ```
 
 In order to query the vertices connected by an edge, use `edge_incidents`:

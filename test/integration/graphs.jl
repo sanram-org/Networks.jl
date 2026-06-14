@@ -8,16 +8,16 @@ addvertex!(network, :b)
 addvertex!(network, :c)
 
 addedge!(network, 1)
-Networks.link!(network, :a, 1)
-Networks.link!(network, :b, 1)
+Networks.setincident!(network, :a, 1)
+Networks.setincident!(network, :b, 1)
 
 addedge!(network, 2)
-Networks.link!(network, :b, 2)
-Networks.link!(network, :c, 2)
+Networks.setincident!(network, :b, 2)
+Networks.setincident!(network, :c, 2)
 
 addedge!(network, 3)
-Networks.link!(network, :c, 3)
-Networks.link!(network, :a, 3)
+Networks.setincident!(network, :c, 3)
+Networks.setincident!(network, :a, 3)
 
 g = convert(Graphs.AbstractGraph{Int}, network)
 

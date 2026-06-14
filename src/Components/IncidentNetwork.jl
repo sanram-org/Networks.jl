@@ -114,7 +114,7 @@ function rmvertex!(graph::IncidentNetwork, vertex)
 
     # unlink vertex-edge pairs
     for edge in vertex_incidents(graph, vertex)
-        unlink!(graph, vertex, edge)
+        unsetincident!(graph, vertex, edge)
     end
 
     # remove vertex
@@ -135,7 +135,7 @@ function rmedge!(graph::IncidentNetwork, edge)
 
     # unlink edge-vertex pairs
     for vertex in edge_incidents(graph, edge)
-        unlink!(graph, vertex, edge)
+        unsetincident!(graph, vertex, edge)
     end
 
     # remove edge
@@ -143,12 +143,12 @@ function rmedge!(graph::IncidentNetwork, edge)
     return graph
 end
 
-function link!(graph::IncidentNetwork, vertex, edge)
+function setincident!(graph::IncidentNetwork, vertex, edge)
     push!(graph.vertexmap[vertex], edge)
     push!(graph.edgemap[edge], vertex)
 end
 
-function unlink!(graph::IncidentNetwork, vertex, edge)
+function unsetincident!(graph::IncidentNetwork, vertex, edge)
     delete!(graph.vertexmap[vertex], edge)
     delete!(graph.edgemap[edge], vertex)
 end

@@ -1,14 +1,13 @@
-# Interfaces
+# Network interface
 
-Networks.jl uses [DelegatorTraits.jl](https://github.com/bsc-quantic/DelegatorTraits.jl) for method delegation: a type wrapping a `Network` implementor can "inherit" (in reality, delegate) its method definitions by just declaring:
-
-```julia
-DelegatorTraits.DelegatorTrait(::Network, ::MyWrapperType) = DelegatorTraits.DelegateToField{:the_field_name}()
-```
-
-Using [`DelegatorTraits.jl`](https://github.com/bsc-quantic/DelegatorTraits.jl) is completely optional and you can still do method delegation manually.
-
-## Network
+> [!NOTE]
+> Networks.jl uses [DelegatorTraits.jl](https://github.com/bsc-quantic/DelegatorTraits.jl) for method delegation: a type wrapping a `Network` implementor can "inherit" (in reality, delegate) its method definitions by just declaring:
+>
+> ```julia
+> DelegatorTraits.DelegatorTrait(::Network, ::MyWrapperType) = DelegatorTraits.DelegateToField{:the_field_name}()
+> ```
+>
+> Using [`DelegatorTraits.jl`](https://github.com/bsc-quantic/DelegatorTraits.jl) is completely optional and you can still do method delegation manually.
 
 The `Network` interface abstracts a network or graph as a bipartite graph whose sets are the vertices and the edges.
 As such, the main difference with the `Graphs.AbstractGraph` interface is that an edge has its own entity.
@@ -23,7 +22,7 @@ A type implementing the `Network` interface must implement the following methods
 | `vertex_neighbors(g, v)` | Returns the vertices neighboring vertex `v` |
 | `edge_neighbors(g, e)`   | Returns the edges neighboring edge `e`      |
 
-### Optional methods
+## Optional methods
 
 The following methods have a default implementation or their implementation is optional.
 
@@ -36,37 +35,41 @@ The following methods have a default implementation or their implementation is o
 | `nvertices(g)`    | If there is a more performant way   | `length(all_vertices(g))` | Returns the number of vertices present in the network  |
 | `nedges(g)`       | If there is a more performant way   | `length(all_edges(g))`    | Returns the number of edges present in the network     |
 
-<!-- | `vertex_at(g, tag)` | If your type has some other way to refer to a vertex | _(undefined)_         | Returns the vertex related to `tag`                    |
-| `edge_at(g, tag)`   | If your type has some other way to refer to an edge  | _(undefined)_         | Returns the edge related to `tag`                      | -->
+## Mutating methods
 
-### Mutating 
-
-Methods that mutate a `Network` can be tricky to abstract and generalize,
+Methods that mutate a `Network` can be tricky to abstract and generalize, specially due to the different nature of an "edge" depending on the [`MatrixRepresentation`](@ref Networks.MatrixRepresentation).
 
 | Method             | Brief description                   |
 | :----------------- | :---------------------------------- |
 | `addvertex!(g, v)` | Adds vertex `v` to network `g`      |
-| `addedge!(g, e)`   | Adds edge `e` to network `g`        |
 | `rmvertex!(g, v)`  | Removes vertex `v` from network `g` |
+| `addedge!(g, e)`   | Adds edge `e` to network `g`        |
 | `rmedge!(g, e)`    | Removes edge `e` from network `g`   |
 
-<!-- | `link!(g, v, e)`    | Declares that edge `e` connects to vertex `v`   |
-| `unlink!(g, v, e)`  | Undeclares that edge `e` connects to vertex `v` | -->
+If the network is based on a [`IncidentMatrix`](@ref Networks.IncidentMatrix), then [`addedge!`](@ref) and [`rmedge!`](@ref) won't link the vertices and the edges. In such case, the network type must implement these two extra functions:
 
-### Behaviors
+| Method                    | Brief description                                                     |
+| :------------------------ | :-------------------------------------------------------------------- |
+| `setincident!(g, v, e)`   | Sets edge `e` and vertex `v` as incident (only if `IncidentMatrix`)   |
+| `unsetincident!(g, v, e)` | Unsets edge `e` and vertex `v` as incident (only if `IncidentMatrix`) |
 
-#### Edge Persistence
+Finally, since on a network based on a [`IncidentMatrix`](@ref Networks.IncidentMatrix) can accept edges that connect no vertices, automatic edge removal on [`rmvertex!`](@ref) might be illdefined. This behavior can be configured using the [`EdgePersistence`](@ref Networks.EdgePersistence) trait.
 
-The [`EdgePersistence`](@ref Networks.EdgePersistence) trait defines the behavior of edges when a vertex is removed. It currently has 3 traits:
+### Matrix Representation
+
+The [`MatrixRepresentation`](@ref Networks.MatrixRepresentation) traits defines the underlying mathematical construct used for representing the network.
+
+- `AdjacentMatrix`: uses a ``V \times V`` matrix whose elements are non-zero if its corresponding vertices are directly connected by an edge.
+  - Most popular representation.
+  - Vertices are explicitly represented, edges are implicit.
+- `IncidentMatrix`: uses a ``V \times E`` matrix whose elements are non-zero if its corresponding vertex-edge pair are connected.
+  - Supports open-edges, hyper-edges and multi-edges.
+  - Both vertices and edges are explicitly represented.
+
+### Edge Persistence
+
+The [`EdgePersistence`](@ref Networks.EdgePersistence) trait defines the behavior of edges when a vertex is removed.
 
 - `PersistEdges`: edges are **never** removed implicitly (i.e. closed edges will transform into open edges).
 - `RemoveEdges`: edges are **always** removed implicitly
 - `PruneEdges`: edges are removed if left stranded (i.e. no other vertex is linked with it) (default)
-
-## Taggable
-
-WIP
-
-## Attributeable
-
-WIP

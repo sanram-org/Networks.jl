@@ -15,6 +15,19 @@ end
 
 # traits
 """
+    MatrixRepresentation
+
+Trait for the matrix type used for representating the finite [`Network`](@ref).
+"""
+abstract type MatrixRepresentation end
+struct AdjacencyMatrix <: MatrixRepresentation end
+struct IncidenceMatrix <: MatrixRepresentation end
+
+MatrixRepresentation(graph) = MatrixRepresentation(graph, DelegatorTrait(Network(), graph))
+MatrixRepresentation(graph, ::DelegateToField) = MatrixRepresentation(delegator(Network(), graph))
+MatrixRepresentation(graph, ::DontDelegate) = throw(MethodError(MatrixRepresentation, graph))
+
+"""
     EdgePersistence
 
 Trait for edge persitence in a [`Network`](@ref). It defines the behavior of edges when a vertex is removed.
@@ -163,18 +176,18 @@ Removes edge `e` from the `graph`.
 function rmedge! end
 
 """
-    link!(graph, v, e)
+    setincident!(graph, v, e)
 
 Links vertex `v` with edge `e` in the `graph`.
 """
-function link! end
+function setincident! end
 
 """
-    unlink!(graph, v, e)
+    unsetincident!(graph, v, e)
 
 Unlinks vertex `v` from edge `e` in the `graph`.
 """
-function unlink! end
+function unsetincident! end
 
 function prune_edges! end
 
@@ -390,9 +403,9 @@ rmvertex!(graph, v, ::DontDelegate) = throw(MethodError(rmvertex!, (graph, v)))
 #     checkeffect(graph, RemoveVertexEffect(v))
 #     rmvertex_inner!(graph, v)
 
-#     # TODO call `unlink!` on the vertex-edge?
+#     # TODO call `unsetincident!` on the vertex-edge?
 #     # - needed for incidence matrix-implementations
-#     # - adjacency matrix-implementations cannot process `unlink!` because overlaps with `rmedge!`
+#     # - adjacency matrix-implementations cannot process `unsetincident!` because overlaps with `rmedge!`
 
 #     handle!(graph, RemoveVertexEffect(v))
 #     return graph
@@ -422,9 +435,9 @@ rmvertex!(graph, v, ::DontDelegate) = throw(MethodError(rmvertex!, (graph, v)))
 #         end
 #     end
 
-#     # TODO call `unlink!` on the vertex-edge?
+#     # TODO call `unsetincident!` on the vertex-edge?
 #     # - needed for incidence matrix-implementations
-#     # - adjacency matrix-implementations cannot process `unlink!` because overlaps with `rmedge!`
+#     # - adjacency matrix-implementations cannot process `unsetincident!` because overlaps with `rmedge!`
 
 #     rmvertex_inner!(graph, v)
 #     handle!(graph, RemoveVertexEffect(v))
@@ -433,27 +446,27 @@ rmvertex!(graph, v, ::DontDelegate) = throw(MethodError(rmvertex!, (graph, v)))
 
 ## `rmedge!`
 # TODO check if edge exists
-# TODO call `unlink!` on the edge?
+# TODO call `unsetincident!` on the edge?
 #   hasedge(graph, e) || throw(ArgumentError("Edge $(e) not found in network"))
 rmedge!(graph, e) = rmedge!(graph, e, DelegatorTrait(Network(), graph))
 rmedge!(graph, e, ::DelegateToField) = rmedge!(delegator(Network(), graph), e)
 rmedge!(graph, e, ::DontDelegate) = throw(MethodError(rmedge!, (graph, e)))
 
-## `link!`
+## `setincident!`
 # TODO check if vertex and edge exist
 #   hasvertex(graph, e.vertex) || throw(ArgumentError("Vertex $(e.vertex) not found in network"))
 #   hasedge(graph, e.edge) || throw(ArgumentError("Edge $(e.edge) not found in network"))
-link!(graph, v, e) = link!(graph, v, e, DelegatorTrait(Network(), graph))
-link!(graph, v, e, ::DelegateToField) = link!(delegator(Network(), graph), v, e)
-link!(graph, v, e, ::DontDelegate) = throw(MethodError(link!, (graph, v, e)))
+setincident!(graph, v, e) = setincident!(graph, v, e, DelegatorTrait(Network(), graph))
+setincident!(graph, v, e, ::DelegateToField) = setincident!(delegator(Network(), graph), v, e)
+setincident!(graph, v, e, ::DontDelegate) = throw(MethodError(setincident!, (graph, v, e)))
 
-## `unlink!
+## `unsetincident!
 # TODO check if vertex and edge exist
 #   hasvertex(graph, e.vertex) || throw(ArgumentError("Vertex $(e.vertex) not found in network"))
 #   hasedge(graph, e.edge) || throw(ArgumentError("Edge $(e.edge) not found in network"))
-unlink!(graph, v, e) = unlink!(graph, v, e, DelegatorTrait(Network(), graph))
-unlink!(graph, v, e, ::DelegateToField) = unlink!(delegator(Network(), graph), v, e)
-unlink!(graph, v, e, ::DontDelegate) = throw(MethodError(unlink!, (graph, v, e)))
+unsetincident!(graph, v, e) = unsetincident!(graph, v, e, DelegatorTrait(Network(), graph))
+unsetincident!(graph, v, e, ::DelegateToField) = unsetincident!(delegator(Network(), graph), v, e)
+unsetincident!(graph, v, e, ::DontDelegate) = throw(MethodError(unsetincident!, (graph, v, e)))
 
 ## `prune_edges!`
 function prune_edges!(graph)

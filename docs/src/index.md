@@ -47,9 +47,9 @@ Edges are independent entities in an `IncidentNetwork`, so you must add it and t
 addedge!(g, 1)
 edges(g)
 
-Networks.link!(g, :a, 1)
-Networks.link!(g, :b, 1)
-Networks.link!(g, :c, 1)
+Networks.setincident!(g, :a, 1)
+Networks.setincident!(g, :b, 1)
+Networks.setincident!(g, :c, 1)
 ```
 
 In order to query the vertices connected by an edge, use `edge_incidents`:
