@@ -252,9 +252,27 @@ function edges_set_hyper end
     return stranded_edges
 end
 
+"""
+    vertex_at(graph, tag)
+
+Returns the vertex associated to `tag`.
+
+!!! note
+
+    This is a method to be extended by the user on its own types.
+"""
 function vertex_at end
 @delegated interface=Network() vertex_at(graph, tag)
 
+"""
+    edge_at(graph, tag)
+
+Returns the edge associated to `tag`.
+
+!!! note
+
+    This is a method to be extended by the user on its own types.
+"""
 function edge_at end
 @delegated interface=Network() edge_at(graph, tag)
 

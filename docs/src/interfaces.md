@@ -35,6 +35,13 @@ The following methods have a default implementation or their implementation is o
 | `nvertices(g)`    | If there is a more performant way   | `length(all_vertices(g))` | Returns the number of vertices present in the network  |
 | `nedges(g)`       | If there is a more performant way   | `length(all_edges(g))`    | Returns the number of edges present in the network     |
 
+The following methods are useful for extending on your own types if you compose on top of a [`Network`](@ref) implementation and you need to refer to a vertex or edge through your own tag system.
+
+| Method            | Description                          |
+| :---------------- | :----------------------------------- |
+| `vertex_at(g, t)` | Returns the vertex associated to `t` |
+| `edge_at(g, t)`   | Returns the vertex associated to `t` |
+
 ## Mutating methods
 
 Methods that mutate a `Network` can be tricky to abstract and generalize, specially due to the different nature of an "edge" depending on the [`MatrixRepresentation`](@ref Networks.MatrixRepresentation).
