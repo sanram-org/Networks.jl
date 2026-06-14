@@ -28,6 +28,7 @@ Base.copy(g::AdjacencyListNetwork) = AdjacencyListNetwork(copy.(g.fadjlist), g.n
 
 DelegatorTraits.ImplementorTrait(::Network, ::AdjacencyListNetwork) = DelegatorTraits.Implements()
 EdgePersistence(::AdjacencyListNetwork) = RemoveEdges()
+MatrixRepresentation(::AdjacencyListNetwork) = AdjacencyMatrix()
 
 vertices(g::AdjacencyListNetwork) = 1:length(g.fadjlist)
 edges(g::AdjacencyListNetwork) = SimpleEdgeIter(g)
